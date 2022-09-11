@@ -58,34 +58,17 @@ public class Tree extends BTreePrinter{ //inherit from BTreePrinter
     }
     
     public Node findClosest(int search_key){
+        // Please use while loop to implement this function
+        // Try not to use recursion
         
         Node current, closest;
         closest = current = root;
         int min_diff = Integer.MAX_VALUE;
         
+        // Use while loop to traverse from root to the closest leaf
         
-        
-        while (current != null) { //วนจนกว่า จะเจอ null 
-            if(search_key == current.key ){ //เมื่อ node ที่ใช้อยุ่ เท่ากับ search_key
-                return current; // นำ node ตรงจุดนั้นแแกมาแล้วจบเลย
-            }
-
-            if( Math.abs(search_key - current.key) < min_diff){ //เมื่อค่าABS ของ search_key - current.key น้อยกว่า min_diff 
-                min_diff = Math.abs(search_key - current.key); //min_diff จะเป็นค่านั้น
-                closest =  current; // ให้closestเป็นnodeที่ใกล้ที่สุด
-            }
-
-            if( search_key < current.key){ //เมื่อ search_key < current.key
-                current = current.left; // ให้cuurent ไปทางซ้าย
-            }
-            else{
-                current = current.right;// ให้cuurent ไปทางขวา
-            }
-            
-        }
-        
-        return closest;//ส่งค่าclosest
-    
+        return closest;
+    }
     
     // Implement this function using the findClosestLeaf technique
     // Do not implement the recursive function
@@ -206,25 +189,41 @@ public class Tree extends BTreePrinter{ //inherit from BTreePrinter
     }
     
     public static Node findNext(Node node){
-        //this function should call other functions
-        return null;
+         if(node.right != null){ // If the node has a right sub-tree, go right
+           return leftDescendant (node.right); 
+       }else{
+           return rightAncestor(node); // If there is no right sub-tree, go parent
+       }
     }
     
     public static Node leftDescendant(Node node){// Case 1 (findMin)
-        // this function should be recursive
-        return null;
+        if(node.left == null){ // If there is no left sub-tree, return node
+            return node;
+        }else{
+            return leftDescendant(node.left); // If the node has a left sub-tree, go left
     }
     
     public static Node rightAncestor(Node node) {// Case 1 (first right parent)
-        // this function should be recursive
-        return null;
+        if(node.parent == null){ //If no parent, return null
+            return null;
+        }
+        if(node.key < node.parent.key){ //If node < node.parent, return node.parent
+            return node.parent;
+        }else{
+            return rightAncestor(node.parent); // If node > node.parent, go parent
+        }
     }
     
     public List rangeSearch(int x, int y){
-        // This function utilizes findCloest() and findNext()
-        // Use List list append(node) to add node to the list
-        // List is the static Array
-        return new List(100);
+        List L = new List(100); // create list
+        Node N = findClosest(x); // find closest of x
+        while(N != null && N.key <= y ){ // if N != null and N.key <= y
+            if(N.key >= x){ //if N.key >= x add N.key to list
+                L.append(N);
+            }
+            N = findNext(N);// go to next of N
+        }
+            return L; //return list
     }
     
          
