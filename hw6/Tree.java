@@ -93,6 +93,23 @@ public class Tree extends BTreePrinter{ //inherit from BTreePrinter
     public void insert(int key) {
         // Implement insert() using the non-recursive version
         // This function should call findClosestLeaf()
+        Node current = findClosestLeaf(root,key); //ให้ current เป็น node ที่ใกล้ key
+        Node n = new Node(key); //สร้าง node n ที่บรรจุค่า key 
+        if(current == null){ 
+            root = n; //ถ้า tree ว่างให้ node n เป็น root ของ tree
+        }else{  //ถ้า tree ไม่ว่าง
+            if(current.key == key){  
+                System.out.println(key);
+                return; // ถ้า node key มีอยู่แล้วให้ return nothing
+            }else{
+                if(key < current.key){ // ถ้า key น้อยกว่า current.key เอา key ไปห้อยด้านซ้าย
+                    current.left = n;
+                }else{ // ไม่อย่างนั้น เอา key ไปห้อยด้านขวา
+                    current.right = n;
+                }
+                n.parent = current;
+            }
+        }
     }
     
     public void printPreOrderDFT(){
